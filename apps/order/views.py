@@ -57,7 +57,7 @@ class OrderPlaceView(LoginRequiredMixin, View):
             total_price += amount
 
         # 运费:实际开发的时候，属于一个子系统
-        transit_price = 10 # 写死
+        transit_price = 10 # 这里是写死
 
         # 实付款
         total_pay = total_price + transit_price
@@ -204,7 +204,9 @@ class OrderCommitView(View):
     '''订单创建'''
     @transaction.atomic
     def post(self, request):
-        '''订单创建'''
+        '''订单创建
+        前端发送：{"addr_id": , "pay_method": ,"sku_ids":[ ] }
+        '''
         # 判断用户是否登录
         user = request.user
         if not user.is_authenticated():
@@ -338,7 +340,9 @@ class OrderCommitView(View):
 class OrderPayView(View):
     '''订单支付'''
     def post(self, request):
-        '''订单支付'''
+        '''订单支付 前端发送： {"order_id": ,   }
+        更严谨来说，需要再发一个前端继续的支付金额，跟后端计算的需要一致
+        '''
         # 用户是否登录
         user = request.user
         if not user.is_authenticated():
@@ -356,7 +360,7 @@ class OrderPayView(View):
                                           user=user,
                                           pay_method=3,
                                           order_status=1)
-        except OrderInfo.DoesNotExist:
+        except OrderInfo.DoesNotExist:  # django.db.models.Model.DoesNotExist
             return JsonResponse({'res':2, 'errmsg':'订单错误'})
 
         # 业务处理:使用python sdk调用支付宝的支付接口
