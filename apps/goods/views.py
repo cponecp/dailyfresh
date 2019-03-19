@@ -6,7 +6,6 @@ from django.core.paginator import Paginator
 from goods.models import GoodsType, GoodsSKU, IndexGoodsBanner,IndexPromotionBanner,IndexTypeGoodsBanner
 from django_redis import get_redis_connection
 from order.models import OrderGoods
-# Create your views here.
 
 # class Test(object):
 #     def __init__(self):
@@ -61,7 +60,7 @@ class IndexView(View):
         if user.is_authenticated():
             # 用户已登录
             conn = get_redis_connection('default')
-            cart_key = 'cart_%d'%user.id
+            cart_key = 'cart_%d'% user.id
             cart_count = conn.hlen(cart_key)
 
         # 组织模板上下文
@@ -105,7 +104,7 @@ class DetailView(View):
 
             # 添加用户的历史记录
             conn = get_redis_connection('default')
-            history_key = 'history_%d'%user.id
+            history_key = 'history_%d'% user.id
             # 移除列表中的goods_id 该函数特性，即使没有该goods_id，也不会报错
             conn.lrem(history_key, 0, goods_id)
             # 把goods_id插入到列表的左侧

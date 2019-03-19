@@ -1,12 +1,12 @@
 $(function(){
-
+	// 声明变量
 	var error_name = false;
 	var error_password = false;
 	var error_check_password = false;
 	var error_email = false;
 	var error_check = false;
 
-
+	// 失去焦点事件，所填检验
 	$('#user_name').blur(function() {
 		check_user_name();
 	});
@@ -23,7 +23,10 @@ $(function(){
 		check_email();
 	});
 
+
 	$('#allow').click(function() {
+	    // is(expr|obj|ele|fn)
+        // 根据选择器、DOM元素或 jQuery 对象来检测匹配元素集合，如果其中至少有一个元素符合这个给定的表达式就返回true。
 		if($(this).is(':checked'))
 		{
 			error_check = false;
@@ -42,7 +45,7 @@ $(function(){
 		var len = $('#user_name').val().length;
 		if(len<5||len>20)
 		{
-			$('#user_name').next().html('请输入5-20个字符的用户名')
+			$('#user_name').next().html('请输入5-20个字符的用户名');
 			$('#user_name').next().show();
 			error_name = true;
 		}
@@ -57,7 +60,7 @@ $(function(){
 		var len = $('#pwd').val().length;
 		if(len<8||len>20)
 		{
-			$('#pwd').next().html('密码最少8位，最长20位')
+			$('#pwd').next().html('密码最少8位，最长20位');
 			$('#pwd').next().show();
 			error_password = true;
 		}
@@ -75,7 +78,7 @@ $(function(){
 
 		if(pass!=cpass)
 		{
-			$('#cpwd').next().html('两次输入的密码不一致')
+			$('#cpwd').next().html('两次输入的密码不一致');
 			$('#cpwd').next().show();
 			error_check_password = true;
 		}
@@ -97,7 +100,7 @@ $(function(){
 		}
 		else
 		{
-			$('#email').next().html('你输入的邮箱格式不正确')
+			$('#email').next().html('你输入的邮箱格式不正确');
 			$('#email').next().show();
 			error_check_password = true;
 		}
@@ -113,7 +116,7 @@ $(function(){
 
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
-			return true;
+			return true; // 返回true则触发form表单的提交事件
 		}
 		else
 		{

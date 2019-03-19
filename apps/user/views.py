@@ -131,6 +131,7 @@ class RegisterView(View):
         if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
             return render(request, 'register.html', {'errmsg': '邮箱格式不正确'})
 
+        # 必须勾选同意协议
         if allow != 'on':
             return render(request, 'register.html', {'errmsg': '请同意协议'})
 
@@ -222,7 +223,7 @@ class LoginView(View):
         user = authenticate(username=username, password=password)
         if user is not None:
             # 用户名密码正确
-            if user.is_active:
+            if user.is_active: # is_active是user表继承Django的AbstractUser类的默认字段
                 # 用户已激活
                 # 记录用户的登录状态
                 login(request, user)

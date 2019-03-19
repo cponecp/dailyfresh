@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.core.cache import cache
 from goods.models import GoodsType,IndexPromotionBanner,IndexGoodsBanner,IndexTypeGoodsBanner
-# Register your models here.
 
-
+"""
+首页的商品信息都不会频繁的被修改，比如天猫的首页
+"""
 class BaseModelAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         '''新增或更新表中的数据时调用'''

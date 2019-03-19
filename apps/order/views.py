@@ -79,7 +79,7 @@ class OrderPlaceView(LoginRequiredMixin, View):
         return render(request, 'place_order.html', context)
 
 
-# 前端传递的参数:地址id(addr_id) 支付方式(pay_method) 用户要购买的商品id字符串(sku_ids)
+# 前端place_order.html传递的参数:地址id(addr_id) 支付方式(pay_method) 用户要购买的商品id字符串(sku_ids)
 # mysql事务: 一组sql操作，要么都成功，要么都失败
 # 高并发:秒杀
 # 支付宝支付
@@ -335,13 +335,14 @@ class OrderCommitView(View):
 
 
 # ajax post
-# 前端传递的参数:订单id(order_id)
+# 前端user_center_order.html传递的参数:订单id(order_id)
 # /order/pay
 class OrderPayView(View):
     '''订单支付'''
     def post(self, request):
-        '''订单支付 前端发送： {"order_id": ,   }
-        更严谨来说，需要再发一个前端继续的支付金额，跟后端计算的需要一致
+        '''
+        订单支付 前端发送： {"order_id": ,   }
+        更严谨来说，需要再发一个前端继续的支付金额，跟后端计算的需要一致:订单页的金额就是后端计算出来渲染上去的，所以也可以不传支付金额
         '''
         # 用户是否登录
         user = request.user
@@ -464,7 +465,7 @@ class CheckPayView(View):
                 trade_no = response.get('trade_no')
                 # 更新订单状态
                 order.trade_no = trade_no
-                order.order_status = 4 # 待评价
+                order.order_status = 4  # 待评价
                 order.save()
                 # 返回结果
                 return JsonResponse({'res':3, 'message':'支付成功'})
@@ -512,7 +513,7 @@ class CommentView(LoginRequiredMixin, View):
         return render(request, "order_comment.html", {"order": order})
 
     def post(self, request, order_id):
-        """处理评论内容"""
+        """处理评论内容 前端通过form表单提交"""
         user = request.user
         # 校验数据
         if not order_id:
